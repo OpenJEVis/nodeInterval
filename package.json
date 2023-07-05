@@ -1,0 +1,24 @@
+{
+  "name": "@envidatec/interval",
+  "version": "1.0.0",
+  "description": "executes crontab expression and sent last incoming message",
+  "keywords": [ "node-red" ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OpenJEVis/nodeInterval.git"
+  },
+  "node-red": {
+    "nodes": {
+      "Interval":"interval.js"
+    },
+    "dependencies": [
+      "node-red-contrib-cron-plus"
+  ]
+  },
+  "dependencies": {
+    "node-red-contrib-cron-plus": "1.5.7"
+  },
+
+  "author": "Daniel Klinker",
+  "license": "GPL-3.0"
+}
