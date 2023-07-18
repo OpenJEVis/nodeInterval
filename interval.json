@@ -1,412 +1,409 @@
  {
-        "id": "b6711ffd2577c6ea",
-        "type": "subflow",
-        "name": "Interval",
-        "info": "",
-        "category": "JEVis",
-        "in": [
-            {
-                "x": 280,
-                "y": 440,
-                "wires": [
-                    {
-                        "id": "17445f2cfc6b864e"
-                    }
-                ]
-            }
-        ],
-        "out": [
-            {
-                "x": 2280,
-                "y": 520,
-                "wires": [
-                    {
-                        "id": "ef6d27537cac9f82",
-                        "port": 0
-                    }
-                ]
-            }
-        ],
-        "env": [
-            {
-                "name": "cron",
-                "type": "str",
-                "value": ""
-            }
-        ],
-        "meta": {
-            "license": "Apache-2.0"
-        },
-        "color": "#3FADB5",
-        "inputLabels": [
-            "Value Input"
-        ],
-        "outputLabels": [
-            "Cron Triggered Value"
-        ],
-        "icon": "node-red/timer.svg",
-        "flow": [
-            {
-                "id": "c49137e12031df75",
-                "type": "comment",
-                "z": "b6711ffd2577c6ea",
-                "name": "1 second samples in here with topic \"sample\"",
-                "info": "",
-                "x": 700,
-                "y": 320,
-                "wires": []
-            },
-            {
-                "id": "024a875e954fe607",
-                "type": "comment",
-                "z": "b6711ffd2577c6ea",
-                "name": "15 minute trigger from cron-plus in here with topic \"trigger\"",
-                "info": "",
-                "x": 780,
-                "y": 540,
-                "wires": []
-            },
-            {
-                "id": "2dbc32b44bb23b03",
-                "type": "join",
-                "z": "b6711ffd2577c6ea",
-                "name": "",
-                "mode": "custom",
-                "build": "object",
-                "property": "payload",
-                "propertyType": "msg",
-                "key": "topic",
-                "joiner": "\\n",
-                "joinerType": "str",
-                "accumulate": true,
-                "timeout": "",
-                "count": "2",
-                "reduceRight": false,
-                "reduceExp": "",
-                "reduceInit": "",
-                "reduceInitType": "",
-                "reduceFixup": "",
-                "x": 1120,
-                "y": 520,
-                "wires": [
-                    [
-                        "97d1ea3b25a76dae"
-                    ]
-                ]
-            },
-            {
-                "id": "97d1ea3b25a76dae",
-                "type": "switch",
-                "z": "b6711ffd2577c6ea",
-                "name": "topic == trigger?",
-                "property": "topic",
-                "propertyType": "msg",
-                "rules": [
-                    {
-                        "t": "eq",
-                        "v": "trigger",
-                        "vt": "str"
-                    }
-                ],
-                "checkall": "true",
-                "repair": false,
-                "outputs": 1,
-                "x": 1330,
-                "y": 520,
-                "wires": [
-                    [
-                        "2a9ac701a52483fd"
-                    ]
-                ]
-            },
-            {
-                "id": "928bcfdfa44978a8",
-                "type": "change",
-                "z": "b6711ffd2577c6ea",
-                "name": "",
-                "rules": [
-                    {
-                        "t": "set",
-                        "p": "topic",
-                        "pt": "msg",
-                        "to": "value",
-                        "tot": "str"
-                    }
-                ],
-                "action": "",
-                "property": "",
-                "from": "",
-                "to": "",
-                "reg": false,
-                "x": 840,
-                "y": 440,
-                "wires": [
-                    [
-                        "2dbc32b44bb23b03"
-                    ]
-                ]
-            },
-            {
-                "id": "3c16821cd11e82bc",
-                "type": "cronplus",
-                "z": "b6711ffd2577c6ea",
-                "name": "",
-                "outputField": "payload",
-                "timeZone": "",
-                "persistDynamic": false,
-                "commandResponseMsgOutput": "output1",
-                "outputs": 1,
-                "options": [],
-                "x": 1320,
-                "y": 900,
-                "wires": [
-                    [
-                        "2dbc32b44bb23b03"
-                    ]
-                ]
-            },
-            {
-                "id": "1662140df3360bbe",
-                "type": "change",
-                "z": "b6711ffd2577c6ea",
-                "name": "",
-                "rules": [
-                    {
-                        "t": "set",
-                        "p": "payload",
-                        "pt": "msg",
-                        "to": "{\"command\":\"add\",\"name\":\"trigger\",\"expression\":\"0 */10 * * * *\",\"payload\":\"hi every 8\",\"type\":\"str\"}",
-                        "tot": "json"
-                    }
-                ],
-                "action": "",
-                "property": "",
-                "from": "",
-                "to": "",
-                "reg": false,
-                "x": 760,
-                "y": 860,
-                "wires": [
-                    [
-                        "4cb0ccd8f992a022"
-                    ]
-                ]
-            },
-            {
-                "id": "4cb0ccd8f992a022",
-                "type": "change",
-                "z": "b6711ffd2577c6ea",
-                "name": "",
-                "rules": [
-                    {
-                        "t": "set",
-                        "p": "payload.expression",
-                        "pt": "msg",
-                        "to": "cron",
-                        "tot": "env"
-                    }
-                ],
-                "action": "",
-                "property": "",
-                "from": "",
-                "to": "",
-                "reg": false,
-                "x": 1030,
-                "y": 860,
-                "wires": [
-                    [
-                        "3c16821cd11e82bc"
-                    ]
-                ]
-            },
-            {
-                "id": "8bf77f894d13019b",
-                "type": "change",
-                "z": "b6711ffd2577c6ea",
-                "name": "",
-                "rules": [
-                    {
-                        "t": "set",
-                        "p": "topic",
-                        "pt": "msg",
-                        "to": "list-all",
-                        "tot": "str"
-                    }
-                ],
-                "action": "",
-                "property": "",
-                "from": "",
-                "to": "",
-                "reg": false,
-                "x": 940,
-                "y": 1020,
-                "wires": [
-                    [
-                        "3c16821cd11e82bc"
-                    ]
-                ]
-            },
-            {
-                "id": "62a8af8751c268db",
-                "type": "inject",
-                "z": "b6711ffd2577c6ea",
-                "name": "",
-                "props": [
-                    {
-                        "p": "payload"
-                    },
-                    {
-                        "p": "topic",
-                        "vt": "str"
-                    }
-                ],
-                "repeat": "",
-                "crontab": "",
-                "once": true,
-                "onceDelay": 0.1,
-                "topic": "",
-                "payload": "",
-                "payloadType": "date",
-                "x": 530,
-                "y": 880,
-                "wires": [
-                    [
-                        "1662140df3360bbe",
-                        "3a801f79a567a33b"
-                    ]
-                ]
-            },
-            {
-                "id": "3a801f79a567a33b",
-                "type": "delay",
-                "z": "b6711ffd2577c6ea",
-                "name": "",
-                "pauseType": "delay",
-                "timeout": "5",
-                "timeoutUnits": "seconds",
-                "rate": "1",
-                "nbRateUnits": "1",
-                "rateUnits": "second",
-                "randomFirst": "1",
-                "randomLast": "5",
-                "randomUnits": "seconds",
-                "drop": false,
-                "allowrate": false,
-                "outputs": 1,
-                "x": 720,
-                "y": 940,
-                "wires": [
-                    [
-                        "8bf77f894d13019b"
-                    ]
-                ]
-            },
-            {
-                "id": "2a9ac701a52483fd",
-                "type": "change",
-                "z": "b6711ffd2577c6ea",
-                "name": "",
-                "rules": [
-                    {
-                        "t": "move",
-                        "p": "payload.value",
-                        "pt": "msg",
-                        "to": "payload",
-                        "tot": "msg"
-                    }
-                ],
-                "action": "",
-                "property": "",
-                "from": "",
-                "to": "",
-                "reg": false,
-                "x": 1570,
-                "y": 520,
-                "wires": [
-                    [
-                        "9c1d24831e9a7d9a",
-                        "ef6d27537cac9f82"
-                    ]
-                ]
-            },
-            {
-                "id": "9c1d24831e9a7d9a",
-                "type": "change",
-                "z": "b6711ffd2577c6ea",
-                "name": "",
-                "rules": [
-                    {
-                        "t": "set",
-                        "p": "error",
-                        "pt": "msg",
-                        "to": "true",
-                        "tot": "bool"
-                    }
-                ],
-                "action": "",
-                "property": "",
-                "from": "",
-                "to": "",
-                "reg": false,
-                "x": 660,
-                "y": 640,
-                "wires": [
-                    [
-                        "928bcfdfa44978a8"
-                    ]
-                ]
-            },
-            {
-                "id": "17445f2cfc6b864e",
-                "type": "change",
-                "z": "b6711ffd2577c6ea",
-                "name": "",
-                "rules": [
-                    {
-                        "t": "set",
-                        "p": "error",
-                        "pt": "msg",
-                        "to": "false",
-                        "tot": "bool"
-                    }
-                ],
-                "action": "",
-                "property": "",
-                "from": "",
-                "to": "",
-                "reg": false,
-                "x": 500,
-                "y": 440,
-                "wires": [
-                    [
-                        "928bcfdfa44978a8"
-                    ]
-                ]
-            },
-            {
-                "id": "ef6d27537cac9f82",
-                "type": "change",
-                "z": "b6711ffd2577c6ea",
-                "name": "",
-                "rules": [
-                    {
-                        "t": "set",
-                        "p": "config",
-                        "pt": "msg",
-                        "to": "cron",
-                        "tot": "env"
-                    }
-                ],
-                "action": "",
-                "property": "",
-                "from": "",
-                "to": "",
-                "reg": false,
-                "x": 1920,
-                "y": 520,
-                "wires": [
-                    []
-                ]
-            }
+    "id": "b6711ffd2577c6ea",
+    "type": "subflow",
+    "name": "Intervall",
+    "info": "",
+    "category": "JEVis",
+    "in": [
+      {
+        "x": 100,
+        "y": 420,
+        "wires": [
+          {
+            "id": "17445f2cfc6b864e"
+          }
         ]
-    }
+      }
+    ],
+    "out": [
+      {
+        "x": 2470,
+        "y": 520,
+        "wires": [
+          {
+            "id": "ef6d27537cac9f82",
+            "port": 0
+          }
+        ]
+      }
+    ],
+    "env": [
+      {
+        "name": "cron",
+        "type": "str",
+        "value": ""
+      }
+    ],
+    "meta": {
+      "license": "Apache-2.0"
+    },
+    "color": "#3FADB5",
+    "inputLabels": [
+      "Value Input"
+    ],
+    "outputLabels": [
+      "Cron Triggered Value"
+    ],
+    "icon": "node-red/timer.svg",
+    "flow": [{
+      "id": "2dbc32b44bb23b03",
+      "type": "join",
+      "z": "b6711ffd2577c6ea",
+      "name": "",
+      "mode": "custom",
+      "build": "object",
+      "property": "payload",
+      "propertyType": "msg",
+      "key": "topic",
+      "joiner": "\\n",
+      "joinerType": "str",
+      "accumulate": true,
+      "timeout": "",
+      "count": "2",
+      "reduceRight": false,
+      "reduceExp": "",
+      "reduceInit": "",
+      "reduceInitType": "",
+      "reduceFixup": "",
+      "x": 1120,
+      "y": 520,
+      "wires": [
+        [
+          "97d1ea3b25a76dae"
+        ]
+      ]
+    },
+      {
+        "id": "97d1ea3b25a76dae",
+        "type": "switch",
+        "z": "b6711ffd2577c6ea",
+        "name": "topic == trigger?",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+          {
+            "t": "eq",
+            "v": "trigger",
+            "vt": "str"
+          }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1300,
+        "y": 520,
+        "wires": [
+          [
+            "680db21ea7fa5e0b"
+          ]
+        ]
+      },
+      {
+        "id": "928bcfdfa44978a8",
+        "type": "change",
+        "z": "b6711ffd2577c6ea",
+        "name": "",
+        "rules": [
+          {
+            "t": "set",
+            "p": "topic",
+            "pt": "msg",
+            "to": "value",
+            "tot": "str"
+          }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 840,
+        "y": 440,
+        "wires": [
+          [
+            "2dbc32b44bb23b03"
+          ]
+        ]
+      },
+      {
+        "id": "3c16821cd11e82bc",
+        "type": "cronplus",
+        "z": "b6711ffd2577c6ea",
+        "name": "",
+        "outputField": "payload",
+        "timeZone": "",
+        "persistDynamic": false,
+        "commandResponseMsgOutput": "output1",
+        "outputs": 1,
+        "options": [],
+        "x": 1320,
+        "y": 900,
+        "wires": [
+          [
+            "2dbc32b44bb23b03"
+          ]
+        ]
+      },
+      {
+        "id": "1662140df3360bbe",
+        "type": "change",
+        "z": "b6711ffd2577c6ea",
+        "name": "",
+        "rules": [
+          {
+            "t": "set",
+            "p": "payload",
+            "pt": "msg",
+            "to": "{\"command\":\"add\",\"name\":\"trigger\",\"expression\":\"0 */10 * * * *\",\"payload\":\"hi every 8\",\"type\":\"str\"}",
+            "tot": "json"
+          }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 760,
+        "y": 860,
+        "wires": [
+          [
+            "4cb0ccd8f992a022"
+          ]
+        ]
+      },
+      {
+        "id": "4cb0ccd8f992a022",
+        "type": "change",
+        "z": "b6711ffd2577c6ea",
+        "name": "",
+        "rules": [
+          {
+            "t": "set",
+            "p": "payload.expression",
+            "pt": "msg",
+            "to": "cron",
+            "tot": "env"
+          }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1030,
+        "y": 860,
+        "wires": [
+          [
+            "3c16821cd11e82bc"
+          ]
+        ]
+      },
+      {
+        "id": "8bf77f894d13019b",
+        "type": "change",
+        "z": "b6711ffd2577c6ea",
+        "name": "",
+        "rules": [
+          {
+            "t": "set",
+            "p": "topic",
+            "pt": "msg",
+            "to": "list-all",
+            "tot": "str"
+          }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 940,
+        "y": 1020,
+        "wires": [
+          [
+            "3c16821cd11e82bc"
+          ]
+        ]
+      },
+      {
+        "id": "62a8af8751c268db",
+        "type": "inject",
+        "z": "b6711ffd2577c6ea",
+        "name": "",
+        "props": [
+          {
+            "p": "payload"
+          },
+          {
+            "p": "topic",
+            "vt": "str"
+          }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 530,
+        "y": 880,
+        "wires": [
+          [
+            "1662140df3360bbe",
+            "3a801f79a567a33b"
+          ]
+        ]
+      },
+      {
+        "id": "3a801f79a567a33b",
+        "type": "delay",
+        "z": "b6711ffd2577c6ea",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 720,
+        "y": 940,
+        "wires": [
+          [
+            "8bf77f894d13019b"
+          ]
+        ]
+      },
+      {
+        "id": "2a9ac701a52483fd",
+        "type": "change",
+        "z": "b6711ffd2577c6ea",
+        "name": "",
+        "rules": [
+          {
+            "t": "move",
+            "p": "payload.value",
+            "pt": "msg",
+            "to": "payload",
+            "tot": "msg"
+          }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1750,
+        "y": 520,
+        "wires": [
+          [
+            "9c1d24831e9a7d9a",
+            "ef6d27537cac9f82"
+          ]
+        ]
+      },
+      {
+        "id": "9c1d24831e9a7d9a",
+        "type": "change",
+        "z": "b6711ffd2577c6ea",
+        "name": "",
+        "rules": [
+          {
+            "t": "set",
+            "p": "error",
+            "pt": "msg",
+            "to": "true",
+            "tot": "bool"
+          }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 660,
+        "y": 640,
+        "wires": [
+          [
+            "928bcfdfa44978a8"
+          ]
+        ]
+      },
+      {
+        "id": "17445f2cfc6b864e",
+        "type": "change",
+        "z": "b6711ffd2577c6ea",
+        "name": "",
+        "rules": [
+          {
+            "t": "set",
+            "p": "error",
+            "pt": "msg",
+            "to": "false",
+            "tot": "bool"
+          }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 500,
+        "y": 440,
+        "wires": [
+          [
+            "928bcfdfa44978a8"
+          ]
+        ]
+      },
+      {
+        "id": "ef6d27537cac9f82",
+        "type": "change",
+        "z": "b6711ffd2577c6ea",
+        "name": "",
+        "rules": [
+          {
+            "t": "set",
+            "p": "config",
+            "pt": "msg",
+            "to": "cron",
+            "tot": "env"
+          }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2210,
+        "y": 520,
+        "wires": [
+          []
+        ]
+      },
+      {
+        "id": "680db21ea7fa5e0b",
+        "type": "function",
+        "z": "b6711ffd2577c6ea",
+        "name": "set Date",
+        "func": "msg.date_time = new Date();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1520,
+        "y": 520,
+        "wires": [
+          [
+            "2a9ac701a52483fd"
+          ]
+        ]
+      }]
+  }
